@@ -1,11 +1,11 @@
 import 'package:mobx/mobx.dart';
 import 'package:todo_app/services/api.dart';
 
-part 'home_controller.g.dart';
+part 'todo_controller.g.dart';
 
-class HomeController = _HomeController with _$HomeController;
+class TodoController = _TodoController with _$TodoController;
 
-abstract class _HomeController with Store {
+abstract class _TodoController with Store {
   @observable
   List<int> itemsSelecionados = [];
 
