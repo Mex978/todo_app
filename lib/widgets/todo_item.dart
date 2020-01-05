@@ -32,7 +32,63 @@ class TodoItem extends StatelessWidget {
                 ? () {
                     _todoController.selecionar(item.id);
                   }
-                : () {},
+                : () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: Container(
+                              height:
+                                  MediaQuery.of(context).size.height * (1 / 2),
+                              child: Column(
+                                children: item.toJson().keys.map<Widget>((key) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "${capitalize(key)}: ",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(5),
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            border: Border.all(width: 1),
+                                          ),
+                                          child: Text("${item.toJson()[key]}"),
+                                        ),
+                                        Divider(
+                                          color: Colors.transparent,
+                                          height: 10,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }).toList()
+                                  ..insert(
+                                      0,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 16, bottom: 16),
+                                        child: Text(
+                                          "Todo Item",
+                                          style: TextStyle(fontSize: 24),
+                                        ),
+                                      )),
+                              ),
+                            ),
+                          );
+                        });
+                  },
             onLongPress: () {
               _todoController.selecionar(item.id);
             },
@@ -40,4 +96,16 @@ class TodoItem extends StatelessWidget {
       },
     );
   }
+}
+
+String capitalize(String string) {
+  if (string == null) {
+    throw ArgumentError("string: $string");
+  }
+
+  if (string.isEmpty) {
+    return string;
+  }
+
+  return string[0].toUpperCase() + string.substring(1);
 }
