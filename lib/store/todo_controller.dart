@@ -36,10 +36,25 @@ abstract class _TodoController with Store {
   }
 
   @action
-  loadTodos() async {
-    loading = true;
-    var todosTemp = await _api.getTodos();
-    loading = false;
+  loadTodos({bool refresh: false}) async {
+    if (refresh) {
+      var todosTemp = await _api.getTodos();
+      todos = todosTemp;
+    } else {
+      loading = true;
+      var todosTemp = await _api.getTodos();
+      loading = false;
+      todos = todosTemp;
+    }
+  }
+
+  @action
+  excluir() {
+    List<dynamic> todosTemp = todos;
+    for (var id in itemsSelecionados) {
+      todosTemp.removeWhere((item) => item["id"] == id);
+    }
     todos = todosTemp;
+    clear();
   }
 }

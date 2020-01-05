@@ -64,8 +64,8 @@ mixin _$TodoController on _TodoController, Store {
   final _$loadTodosAsyncAction = AsyncAction('loadTodos');
 
   @override
-  Future loadTodos() {
-    return _$loadTodosAsyncAction.run(() => super.loadTodos());
+  Future loadTodos({bool refresh = false}) {
+    return _$loadTodosAsyncAction.run(() => super.loadTodos(refresh: refresh));
   }
 
   final _$_TodoControllerActionController =
@@ -86,6 +86,16 @@ mixin _$TodoController on _TodoController, Store {
     final _$actionInfo = _$_TodoControllerActionController.startAction();
     try {
       return super.clear();
+    } finally {
+      _$_TodoControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic excluir() {
+    final _$actionInfo = _$_TodoControllerActionController.startAction();
+    try {
+      return super.excluir();
     } finally {
       _$_TodoControllerActionController.endAction(_$actionInfo);
     }

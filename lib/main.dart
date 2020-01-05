@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
         Dependency((i) => TodoController()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,

@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return _todoController.itemsSelecionados.isNotEmpty
                     ? IconButton(
                         icon: Icon(Icons.remove_circle),
-                        onPressed: () {},
+                        onPressed: () => _todoController.excluir(),
                       )
                     : Container();
               },
@@ -53,11 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView.builder(
-            itemCount: _todoController.todos.length,
-            itemBuilder: (_, index) {
-              return TodoItem(item: _todoController.todos[index], index: index);
-            },
+          return RefreshIndicator(
+            onRefresh: () => _todoController.loadTodos(refresh: true),
+            child: ListView.builder(
+              itemCount: _todoController.todos.length,
+              itemBuilder: (_, index) {
+                return TodoItem(item: _todoController.todos[index]);
+              },
+            ),
           );
         }));
   }

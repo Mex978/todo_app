@@ -5,17 +5,16 @@ import 'package:flutter/material.dart';
 
 class TodoItem extends StatelessWidget {
   final _todoController = BlocProvider.getDependency<TodoController>();
-  final int index;
   final dynamic item;
 
-  TodoItem({this.index, this.item});
+  TodoItem({this.item});
 
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
         bool isNotEmpty = _todoController.itemsSelecionados.isNotEmpty;
-        bool isChecked = _todoController.itemsSelecionados.contains(index);
+        bool isChecked = _todoController.itemsSelecionados.contains(item["id"]);
         return ListTile(
             trailing: isChecked
                 ? Icon(
@@ -27,7 +26,7 @@ class TodoItem extends StatelessWidget {
                         Icons.check_box_outline_blank,
                         color: Theme.of(context).primaryColor,
                       )
-                    : Row(mainAxisSize: MainAxisSize.min),
+                    : Container(width: 0),
             onTap: isNotEmpty
                 ? () {
                     _todoController.selecionar(item["id"]);
