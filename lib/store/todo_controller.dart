@@ -1,3 +1,4 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_app/services/api.dart';
 
@@ -15,7 +16,7 @@ abstract class _TodoController with Store {
   @observable
   bool loading = false;
 
-  Api _api = Api();
+  final _api = BlocProvider.getDependency<Api>();
 
   @action
   selecionar(int id) {
