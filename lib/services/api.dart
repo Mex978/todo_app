@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:todo_app/models/todo_model.dart';
 
 class Api {
   final _dio = Dio();
@@ -8,12 +9,17 @@ class Api {
         BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com/");
   }
 
-  Future getTodos() async {
-    print("Entrou");
+  Future<List<Todo>> getTodos() async {
     var response = await _dio.get("todos");
 
-    // print(response.data);
+    List<Todo> data = [];
 
-    return response.data;
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      for (var item in response.data) {
+        data.add(Todo.fromJson(item));
+      }
+    }
+
+    return data;
   }
 }

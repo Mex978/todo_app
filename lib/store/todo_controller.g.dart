@@ -30,14 +30,14 @@ mixin _$TodoController on _TodoController, Store {
   final _$todosAtom = Atom(name: '_TodoController.todos');
 
   @override
-  List<dynamic> get todos {
+  List<Todo> get todos {
     _$todosAtom.context.enforceReadPolicy(_$todosAtom);
     _$todosAtom.reportObserved();
     return super.todos;
   }
 
   @override
-  set todos(List<dynamic> value) {
+  set todos(List<Todo> value) {
     _$todosAtom.context.conditionallyRunInAction(() {
       super.todos = value;
       _$todosAtom.reportChanged();
@@ -86,6 +86,16 @@ mixin _$TodoController on _TodoController, Store {
     final _$actionInfo = _$_TodoControllerActionController.startAction();
     try {
       return super.clear();
+    } finally {
+      _$_TodoControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic adicionar(String content) {
+    final _$actionInfo = _$_TodoControllerActionController.startAction();
+    try {
+      return super.adicionar(content);
     } finally {
       _$_TodoControllerActionController.endAction(_$actionInfo);
     }
