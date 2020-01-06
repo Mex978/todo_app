@@ -53,20 +53,24 @@ abstract class _TodoController with Store {
   @action
   loadTodos({bool refresh: false}) async {
     if (refresh) {
-      List<Todo> todosTemp = await _api.getTodos();
-      for (Todo item in todosTemp) {
+      List<Todo> todosTemp = todos;
+      List<Todo> recoveredTodos = await _api.getTodos();
+      for (Todo item in recoveredTodos) {
         if (!_contains(item)) {
-          todos.insert(item.id - 1, item);
+          todosTemp.insert(item.id - 1, item);
         }
       }
+      todos = todosTemp;
     } else {
       loading = true;
-      List<Todo> todosTemp = await _api.getTodos();
-      for (Todo item in todosTemp) {
+      List<Todo> todosTemp = todos;
+      List<Todo> recoveredTodos = await _api.getTodos();
+      for (Todo item in recoveredTodos) {
         if (!_contains(item)) {
-          todos.insert(item.id - 1, item);
+          todosTemp.insert(item.id - 1, item);
         }
       }
+      todos = todosTemp;
       loading = false;
     }
   }
