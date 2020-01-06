@@ -9,6 +9,12 @@ part 'todo_controller.g.dart';
 class TodoController = _TodoController with _$TodoController;
 
 abstract class _TodoController with Store {
+  Api _api;
+
+  _TodoController() {
+    _api = BlocProvider.getDependency<Api>();
+  }
+
   @observable
   List<int> itemsSelecionados = [];
 
@@ -17,8 +23,6 @@ abstract class _TodoController with Store {
 
   @observable
   bool loading = false;
-
-  final _api = BlocProvider.getDependency<Api>();
 
   @action
   selecionar(int id) {
@@ -41,12 +45,20 @@ abstract class _TodoController with Store {
   loadTodos({bool refresh: false}) async {
     if (refresh) {
       List<Todo> todosTemp = await _api.getTodos();
-      todos = todosTemp;
+      for (Todo item in todosTemp) {
+        if (!todos.contains(item)) {
+          todos.insert(item.id - 1, item);
+        }
+      }
     } else {
       loading = true;
       List<Todo> todosTemp = await _api.getTodos();
+      for (Todo item in todosTemp) {
+        if (!todos.contains(item)) {
+          todos.insert(item.id - 1, item);
+        }
+      }
       loading = false;
-      todos = todosTemp;
     }
   }
 

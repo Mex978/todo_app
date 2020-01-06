@@ -10,20 +10,23 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _todoController = BlocProvider.getDependency<TodoController>();
     TextEditingController _textEditController;
+
     _todoController.loadTodos();
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Aplication"),
+          title: Text("Todo App"),
           actions: <Widget>[
             Observer(
               builder: (_) {
-                return _todoController.itemsSelecionados.isNotEmpty
-                    ? IconButton(
-                        icon: Icon(Icons.remove_circle),
-                        onPressed: () => _todoController.excluir(),
-                      )
-                    : Container();
+                if (_todoController.itemsSelecionados.isNotEmpty) {
+                  return IconButton(
+                    icon: Icon(Icons.remove_circle),
+                    onPressed: () => _todoController.excluir(),
+                  );
+                } else {
+                  return Container();
+                }
               },
             ),
             IconButton(
@@ -31,70 +34,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.add),
               onPressed: () {
                 _textEditController = TextEditingController();
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * (1 / 2),
-                          child: Column(
-                            children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  child: TextField(
-                                    maxLines: null,
-                                    keyboardType: TextInputType.multiline,
-                                    controller: _textEditController,
-                                    decoration: InputDecoration(
-                                        hintText: "Digite aqui",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    FlatButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text(
-                                        "Cancelar",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                      ),
-                                    ),
-                                    FlatButton(
-                                      onPressed: () {
-                                        print(_textEditController.text);
-                                        if (_textEditController
-                                            .text.isNotEmpty) {
-                                          _todoController.adicionar(
-                                              _textEditController.text);
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                      child: Text(
-                                        "Adicionar",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).primaryColor),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    });
+                _addItemDialog(context, _textEditController, _todoController);
               },
             ),
           ],
@@ -115,5 +55,67 @@ class HomeScreen extends StatelessWidget {
             ),
           );
         }));
+  }
+
+  _addItemDialog(context, textEditController, todoController) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            child: Container(
+              height: MediaQuery.of(context).size.height * (1 / 2),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: TextField(
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        controller: textEditController,
+                        decoration: InputDecoration(
+                            hintText: "Digite aqui", border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            "Cancelar",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            print(textEditController.text);
+                            if (textEditController.text.isNotEmpty) {
+                              todoController.adicionar(textEditController.text);
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Text(
+                            "Adicionar",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
