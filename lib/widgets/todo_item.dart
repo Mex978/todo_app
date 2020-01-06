@@ -31,9 +31,9 @@ class TodoItem extends StatelessWidget {
                       )
                     : Container(width: 0),
             onTap: _existemItemsSelecionados
-                ? _todoController.selecionar(item.id)
-                : _itemInformation(context),
-            onLongPress: _todoController.selecionar(item.id),
+                ? () => _todoController.selecionar(item.id)
+                : () => _itemInformation(context),
+            onLongPress: () => _todoController.selecionar(item.id),
             title: Text(item.title));
       },
     );

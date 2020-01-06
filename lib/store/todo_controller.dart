@@ -36,6 +36,15 @@ abstract class _TodoController with Store {
     }
   }
 
+  _contains(i) {
+    for (Todo item in todos) {
+      if (item.id == i.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @action
   clear() {
     itemsSelecionados = [];
@@ -46,7 +55,7 @@ abstract class _TodoController with Store {
     if (refresh) {
       List<Todo> todosTemp = await _api.getTodos();
       for (Todo item in todosTemp) {
-        if (!todos.contains(item)) {
+        if (!_contains(item)) {
           todos.insert(item.id - 1, item);
         }
       }
@@ -54,7 +63,7 @@ abstract class _TodoController with Store {
       loading = true;
       List<Todo> todosTemp = await _api.getTodos();
       for (Todo item in todosTemp) {
-        if (!todos.contains(item)) {
+        if (!_contains(item)) {
           todos.insert(item.id - 1, item);
         }
       }

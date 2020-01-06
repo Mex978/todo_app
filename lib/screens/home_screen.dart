@@ -13,6 +13,8 @@ class HomeScreen extends StatelessWidget {
 
     _todoController.loadTodos();
 
+    print("LOAD TODOS COMPLETE");
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Todo App"),
